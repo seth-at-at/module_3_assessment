@@ -1,14 +1,14 @@
 require "rails_helper"
 
-RSpec.describe "When sending requests" do
+RSpec.describe "When sending requests", type: :request do
   context "GET" do
     before(:each) do
       create_list(:item, 10)
     end
 
     it "returns JSON containing all items" do
-      visit "/api/v1/items"
-      items = JSON.parse(page.body)
+      get "/api/v1/items"
+      items = JSON.parse(response.body)
       first_item = items.first
       expect(items.count).to eq(10)
       expect(first_item["name"]).to eq(Item.first.name)
@@ -19,8 +19,8 @@ RSpec.describe "When sending requests" do
     end
 
     it "returns JSON containing specific item" do
-      visit "/api/v1/items/1"
-      item = JSON.parse(page.body)
+      get "/api/v1/items/1"
+      item = JSON.parse(response.body)
       expect(item["name"]).to eq(Item.first.name)
       expect(item["description"]).to eq(Item.first.description)
       expect(item["image_url"]).to eq(Item.first.image_url)
@@ -28,23 +28,22 @@ RSpec.describe "When sending requests" do
       expect(item["updated_at"]).to eq(nil)
     end
   end
+
+  context "DELETE" do
+    it "returns 204 JSON that item is deleted" do
+      delete "/api/v1/items/1"
+      expect(response.status).to eq 204
+    end
+  end
+
+  context "POST" do
+    it "returns 201 JSON that item is created with attributes" do
+      post "/api/v1/items", params:{name: "My item", description: "I made this", image_url: "http://i2.kym-cdn.com/entries/icons/original/000/019/784/iconimadethis.png"}
+      expect(response.status).to eq 201
+      item = JSON.parse(response.body)
+      expect(item["item"]["name"]).to eq "My item"
+      expect(item["item"]["description"]).to eq "I made this"
+      expect(item["item"]["image_url"]).to eq "http://i2.kym-cdn.com/entries/icons/original/000/019/784/iconimadethis.png"
+    end
+  end
 end
-# For this challenge clone [Storedom](https://github.com/turingschool-examples/storedom).
-#
-# We need an API for the application that can both read and write data. Start by focusing on functionality for items. All of this should happen in a dedicated, versioned controller.
-#
-# When I send a GET request to `/api/v1/items`
-# I receive a 200 JSON response containing all items
-# And each item has an id, name, description, and image_url but not the created_at or updated_at
-#
-# When I send a GET request to `/api/v1/items/1`
-# I receive a 200 JSON response containing the id, name, description, and image_url but not the created_at or updated_at
-#
-# When I send a DELETE request to `/api/v1/items/1`
-# I receive a 204 JSON response if the record is successfully deleted
-#
-# When I send a POST request to `/api/v1/items` with a name, description, and image_url
-# I receive a 201 JSON  response if the record is successfully created
-# And I receive a JSON response containing the id, name, description, and image_url but not the created_at or updated_at
-#
-# * Verify that your non-GET requests work using Postman or curl. (Hint: `ActionController::API`). Why doesn't the default `ApplicationController` support POST and PUT requests?
