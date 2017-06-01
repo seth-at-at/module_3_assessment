@@ -16,7 +16,7 @@ class BestBuyService
   end
 
   def find_by_zip(zip)
-    parse(@base_uri.get("stores(area(#{zip},25))?format=json&show=storeId,name,city,phone,distance,storeType&pageSize=10&apiKey=#{@key}"))
+    parse(@base_uri.get("stores(area(#{zip},25))?format=json&show=storeId,longName,city,phone,distance,storeType&pageSize=10&apiKey=#{@key}"))
   end
 
   def parse(input)

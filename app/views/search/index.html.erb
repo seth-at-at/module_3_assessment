@@ -1,9 +1,13 @@
 <%= @response["total"] %> Total Stores <br>
-<%= @response["stores"].each do |store| %>
-  <%= store["storeID"] %> <br>
-  <%= store["name"] %> <br>
-  <%= store["city"] %> <br>
-  <%= store["distance"] %> <br>
-  <%= store["phone"] %> <br>
-  <%= store["storeType"] %> <br> <br>
-<% end %>
+<div class="all_stores">
+  <%= @response["stores"].each do |store| %>
+    <div class="stores">
+      Store ID: <%= store["storeID"] %> <br>
+      Store Name: <%= store["longName"] %> <br>
+      City: <%= store["city"] %> <br>
+      Distance: <%= store["distance"] %> <br>
+      Phone: <%= store["phone"] %> <br>
+      Store Type: <%= store["storeType"] %> <br> <br>
+    </div>
+  <% end %>
+</div>
