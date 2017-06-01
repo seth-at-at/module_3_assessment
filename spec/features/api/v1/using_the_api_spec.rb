@@ -7,12 +7,25 @@ RSpec.describe "When sending requests" do
     end
 
     it "returns JSON containing all items" do
-      Item.create(name: "headphones")
       visit "/api/v1/items"
-      expect(response).to be_success
-      items = JSON.parse(response.body)
-
+      items = JSON.parse(page.body)
+      first_item = items.first
       expect(items.count).to eq(10)
+      expect(first_item["name"]).to eq(Item.first.name)
+      expect(first_item["description"]).to eq(Item.first.description)
+      expect(first_item["image_url"]).to eq(Item.first.image_url)
+      expect(first_item["created_at"]).to eq(nil)
+      expect(first_item["updated_at"]).to eq(nil)
+    end
+
+    it "returns JSON containing specific item" do
+      visit "/api/v1/items/1"
+      item = JSON.parse(page.body)
+      expect(item["name"]).to eq(Item.first.name)
+      expect(item["description"]).to eq(Item.first.description)
+      expect(item["image_url"]).to eq(Item.first.image_url)
+      expect(item["created_at"]).to eq(nil)
+      expect(item["updated_at"]).to eq(nil)
     end
   end
 end
