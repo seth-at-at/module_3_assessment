@@ -1,1 +1,9 @@
-<%= @stores.count %> total stores
+<%= @response["total"] %> Total Stores <br>
+<%= @response["stores"].each do |store| %>
+  <%= store["storeID"] %> <br>
+  <%= store["name"] %> <br>
+  <%= store["city"] %> <br>
+  <%= store["distance"] %> <br>
+  <%= store["phone"] %> <br>
+  <%= store["storeType"] %> <br> <br>
+<% end %>

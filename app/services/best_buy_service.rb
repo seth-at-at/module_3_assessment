@@ -11,16 +11,15 @@
 class BestBuyService
 
   def initialize
-    @base_uri = Faraday.new("https://api.bestbuy.com/v1/stores")
+    @base_uri = Faraday.new("https://api.bestbuy.com/v1")
     @key = ENV["secret_api_key"]
   end
 
   def find_by_zip(zip)
-    x = @base_uri.get("(postalCode=#{zip})?apiKey=#{@key}&format=json")
-    binding.pry
+    parse(@base_uri.get("stores(area(#{zip},25))?format=json&show=storeId,name,city,phone,distance,storeType&pageSize=10&apiKey=#{@key}"))
   end
 
   def parse(input)
-    JSON.parse(input.body)
+    JSON.parse(input.body, symbolize_name: true)
   end
 end
