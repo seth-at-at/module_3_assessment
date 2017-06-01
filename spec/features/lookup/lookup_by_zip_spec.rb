@@ -8,8 +8,8 @@ RSpec.describe "return BestBuy's in our location" do
       click_on "search"
       expect(current_path).to eq("/search")
       expect(page).to have_content("16 Total Stores")
-      expect(page).to have_css(".stores", count: 10)
       within ".all_stores" do
+        expect(page).to have_css(".stores", count: 10)
         expect(page).to have_content "Store Name: BEST BUY MOBILE - CHERRY CREEK SHOPPING CENTER"
         expect(page).to have_content "City: DENVER"
         expect(page).to have_content "Phone: 303-758-5805"
