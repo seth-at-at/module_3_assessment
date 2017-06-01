@@ -2,15 +2,20 @@ require "rails_helper"
 
 RSpec.describe "When sending requests" do
   context "GET" do
+    before(:each) do
+      create_list(:item, 10)
+    end
+
     it "returns JSON containing all items" do
-      
+      Item.create(name: "headphones")
+      visit "/api/v1/items"
+      expect(response).to be_success
+      items = JSON.parse(response.body)
+
+      expect(items.count).to eq(10)
     end
   end
 end
-
-
-
-
 # For this challenge clone [Storedom](https://github.com/turingschool-examples/storedom).
 #
 # We need an API for the application that can both read and write data. Start by focusing on functionality for items. All of this should happen in a dedicated, versioned controller.
