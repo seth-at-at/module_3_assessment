@@ -1,7 +1,8 @@
-<%= form_for :search do |f|%>
-  <%= f.label :zip %>
-  <%= f.text_field :zip, placeholder: "search by zip code" %>
-  <%= f.submit "search", search_path %>
+<%= form_tag search_index_path, method: :get do%>
+<p>
+  <%= text_field_tag :zip, params[:zip] %>
+  <%= submit_tag "search", :name => nil %>
+</p>
 <% end %>
 
 <div class="container">

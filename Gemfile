@@ -13,7 +13,9 @@ gem "therubyracer"
 gem "less-rails-bootstrap"
 gem "minitest-rails"
 gem "httparty"
+gem "faraday"
 gem 'active_model_serializers'
+gem "figaro"
 
 group :development do
   gem "spring"
