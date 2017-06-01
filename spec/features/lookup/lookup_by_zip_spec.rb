@@ -2,7 +2,19 @@ require "rails_helper"
 
 RSpec.describe "return BestBuy's in our location" do
   context "by zip code" do
-    
+    it "returns stores" do
+      visit root_path
+      fill_in "zip", with: "80202"
+      click_on "search"
+      expect(current_path).to eq("/search")
+      expect(page).to have_content("16 Total Stores")
+      expect(page).to have_css(".stores", count: 10)
+      within ".stores" do
+        expect(page).to have_content "Denver"
+        expect(page).to have_content "80202"
+        expect(page).to have_content "phone"
+      end
+    end
   end
 end
 
